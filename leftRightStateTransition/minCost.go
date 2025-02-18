@@ -44,47 +44,37 @@ func minCost(nums []int, cost []int) int64 {
     n := len(nums)
     type pair struct {
         num int
-        cost int64
+        cost float64
     }
-    totalCost := int64(0)
+    totalCost := float64(0)
     costs := make([]pair, n)
     for i := 0; i < n; i++ {
-        costs[i] = pair{nums[i], int64(cost[i])}
-        totalCost += int64(cost[i])
+        costs[i] = pair{nums[i], float64(cost[i])}
+        totalCost += float64(cost[i])
     }
     sort.Slice(costs, func(i,j int)bool{
         return costs[i].num < costs[j].num
     })
 
     // now find the index i such that sum(costs[0..i].cost) is closed to half of sum(costs[0..n-1].cost)
-    sum := int64(costs[0].cost)
-    k := 1
+    sum := float64(0)
+    k := 0
     for ; k < n; k++ {
-        nextSum := sum + costs[k].cost
-        if  sum >= totalCost / 2 || (sum <= totalCost / 2 && nextSum > totalCost / 2) {
+        sum += costs[k].cost
+        if  sum >= totalCost / 2 {
             break
         }
-        sum = nextSum
     }
 
-    // compare costs (->costs[k-1].num) and costs(->costs[k].num)
-    cost1 := int64(0)
-    target1 := costs[k-1].num
-    for i := 0; i < k; i++ {
-        cost1 += costs[i].cost * int64(target1 - costs[i].num)
-    }
-    for i := k; i < n; i++ {
-        cost1 += costs[i].cost * int64(costs[i].num - target1)
-    }
 
-    cost2 := int64(0)
+    cost2 := float64(0)
     target2 := costs[k].num
     for i := 0; i < k; i++ {
-        cost2 += costs[i].cost * int64(target2 - costs[i].num)
+        cost2 += costs[i].cost * float64(target2 - costs[i].num)
     }
     for i := k; i < n; i++ {
-        cost2 += costs[i].cost * int64(costs[i].num - target2)
+        cost2 += costs[i].cost * float64(costs[i].num - target2)
     }
     
-    return min(cost1, cost2)
+    return int64(cost2)
 }
