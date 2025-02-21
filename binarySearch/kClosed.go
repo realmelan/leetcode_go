@@ -72,10 +72,10 @@ func partition(points []*pair, lo, hi int) int {
     i := lo+1
     j := hi
     pivot := points[lo]
-    for {
-        if i < hi && points[i].dist < pivot.dist {
+    for i <= j {
+        if points[i].dist < pivot.dist {
             i++
-        } else if j > lo && points[j].dist > pivot.dist {
+        } else if points[j].dist > pivot.dist {
             j--
         } else if i >= j {
             break
