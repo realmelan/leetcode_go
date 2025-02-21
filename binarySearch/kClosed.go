@@ -39,10 +39,60 @@ func kClosest(points [][]int, k int) [][]int {
     // maintain a list of k closed points in sorted order
     // for a new point, insert it in the list using binary search
     // or a priority queue can be used
-    type pair struct {
+    ps := make([]*pair, len(points))
+    for i, p := range points {
+        ps[i] = &pair{p, distance(p)}
+    }
+
+    i, j := 0, len(ps)-1
+    for {
+        x := partition(ps, i, j)
+        //fmt.Println("x=%v, i=%v, j=%v, ps=%v", x, i, j, ps)
+        if x == k-1 {
+            break
+        } else if x > k-1 {
+            j = x-1
+        } else {
+            i = x+1
+        }
+    }
+
+    res := make([][]int, k)
+    for i = 0; i < k; i++ {
+        res[i] = ps[i].point
+    }
+    return res
+}
+
+type pair struct {
         point []int
         dist int
     }
+func partition(points []*pair, lo, hi int) int {
+    i := lo+1
+    j := hi
+    pivot := points[lo]
+    for {
+        if i < hi && points[i].dist < pivot.dist {
+            i++
+        } else if j > lo && points[j].dist > pivot.dist {
+            j--
+        } else if i >= j {
+            break
+        } else {
+            points[i], points[j] = points[j], points[i]
+            i++
+            j--
+        }
+    }
+    points[lo], points[j] = points[j], points[lo]
+    return j
+}
+
+func kClosest2(points [][]int, k int) [][]int {
+    // maintain a list of k closed points in sorted order
+    // for a new point, insert it in the list using binary search
+    // or a priority queue can be used
     res := make([]*pair, 0)
     for _, p := range points {
         pd := &pair{p, distance(p)}
