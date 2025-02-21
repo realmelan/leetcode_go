@@ -48,10 +48,10 @@ func findKthLargest(nums []int, k int) int {
 func partition(nums []int, p, q int) int {
     pivot := nums[p]
     i, j := p+1, q
-    for {
-        if i < q && nums[i] < pivot {
+    for i <= j {
+        if nums[i] < pivot {
             i++
-        } else if j > p && nums[j] > pivot { // has to be >, not >=
+        } else if nums[j] > pivot { // has to be >, not >=
             j--
         } else if i>=j {
             break
