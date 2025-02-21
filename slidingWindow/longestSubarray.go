@@ -36,13 +36,11 @@ nums[i] is either 0 or 1.
 
 func longestSubarray(nums []int) int {
     n := len(nums)
-    i, j, cnt0, cnt1 := 0, 0, 0, 0
+    i, j, cnt0 := 0, 0, 0
     for j < n {
         v := nums[j]
         if v == 0 {
             cnt0++
-        } else {
-            cnt1++
         }
         if cnt0 > 1 {
             if nums[i] == 0 {
@@ -53,9 +51,5 @@ func longestSubarray(nums []int) int {
         j++
     }
 
-    if cnt1 == 0 {
-        return 0
-    } else {
-        return j - i - 1
-    }
+    return j - i - 1
 }
