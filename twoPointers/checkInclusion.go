@@ -38,14 +38,10 @@ func checkInclusion(s1 string, s2 string) bool {
 
     i := 0
     for i < n2 {
-        if _, ok := m[s2[i]]; ok {
-            m[s2[i]]--
-        }
+        m[s2[i]]--
 
         if i >= n1 {
-             if _, ok := m[s2[i-n1]]; ok {
-                m[s2[i-n1]]++
-            }
+            m[s2[i-n1]]++
         }
         if i >= n1-1 && found(m) {
             return true
