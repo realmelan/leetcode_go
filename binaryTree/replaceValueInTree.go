@@ -52,7 +52,50 @@ The number of nodes in the tree is in the range [1, 105].
  *     Right *TreeNode
  * }
  */
+
 func replaceValueInTree(root *TreeNode) *TreeNode {
+    // use BFS
+    q := make([]*TreeNode, 0)
+    q = append(q, root)
+    i := 0
+    for i < len(q) {
+        j := len(q)
+        sum := 0
+        var p []*TreeNode
+        for i < j {
+            p = append(p, q[i])
+            if q[i].Left != nil {
+                q = append(q, q[i].Left)
+                sum += q[i].Left.Val
+            }
+            if q[i].Right != nil {
+                q = append(q, q[i].Right)
+                sum += q[i].Right.Val
+            }
+            i++
+        }
+
+        for _, node := range p {
+            val := sum
+            if node.Left != nil {
+                val -= node.Left.Val
+            }
+            if node.Right != nil {
+                val -= node.Right.Val
+            }
+
+            if node.Left != nil {
+                node.Left.Val = val
+            }
+            if node.Right != nil {
+                node.Right.Val = val
+            }
+        }
+    }
+    root.Val = 0
+    return root
+ }
+func replaceValueInTree2(root *TreeNode) *TreeNode {
     // first pass: build level sum using a list
     // second pass: build new tree
     if root == nil {
