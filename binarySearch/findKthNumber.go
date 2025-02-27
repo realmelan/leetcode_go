@@ -29,6 +29,31 @@ Constraints:
 1 <= m, n <= 3 * 104
 1 <= k <= m * n
 */
+
+func findKthNumber(m int, n int, k int) int {
+    lo, up := 1, m*n
+    for lo < up {
+        mid := (lo + up) / 2
+        le := check(m, n, mid)
+        //fmt.Println("mid=%v, le=%v, closed=%v", mid, le, closed)
+        if le < k {
+            lo = mid+1
+        } else {
+            up = mid
+        }
+    }
+
+    return up
+}
+
+func check(m, n, t int) (le int) {
+    for i := 1; i <= m; i++ {
+        v := min(n, t/i)
+        le += v
+    }
+    return
+}
+
 func findKthNumber(m int, n int, k int) int {
     lo, up := 1, m*n
     res := up
