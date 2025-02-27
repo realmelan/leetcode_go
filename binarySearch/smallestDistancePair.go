@@ -41,6 +41,34 @@ func smallestDistancePair(nums []int, k int) int {
     sort.Ints(nums)
     n := len(nums)
     lo, up := 0, nums[n-1]-nums[0]
+    for lo < up {
+        mid := (lo+up)/2
+        le := check(nums, mid)
+        if le < k {
+            lo = mid+1
+        } else {
+            up = mid
+        }
+    }
+    return up
+}
+
+func check(nums []int, di int) (le int) {
+    n := len(nums)
+    j := 0
+    for i := 0; i < n-1; i++ {
+        for j < n && nums[j] - nums[i] <= di {
+            j++
+        }
+        le += j-i-1
+    }
+    return
+}
+
+func smallestDistancePair(nums []int, k int) int {
+    sort.Ints(nums)
+    n := len(nums)
+    lo, up := 0, nums[n-1]-nums[0]
     res := up
     for lo <= up {
         mid := (lo+up)/2
