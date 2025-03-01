@@ -46,6 +46,9 @@ func findMin(nums []int) int {
         } else if nums[lo] > nums[mid] {
             up = mid
         } else {
+            if lo != 0 && nums[lo] < nums[lo-1] {
+                break
+            }
             lo++
         }
     }
