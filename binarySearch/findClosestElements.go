@@ -38,6 +38,23 @@ func findClosestElements(arr []int, k int, x int) []int {
     // find position in arr that is closed to x
     // then use two pointers to move left or right
     n := len(arr)
+    lo, up := 0, n-k
+    for lo < up {
+        m := (lo+up)/2
+        // compare sum(arr[m],arr[m+1],...,arr[m+k-1]) with sum(rr[m+1],...,arr[m+k-1], arr[m+k])
+        if x - arr[m] > arr[m+k] - x {
+            lo = m+1
+        } else {
+            up=m
+        }
+    }
+    return arr[lo:lo+k]
+}
+
+func findClosestElements2(arr []int, k int, x int) []int {
+    // find position in arr that is closed to x
+    // then use two pointers to move left or right
+    n := len(arr)
     lo, up := 0, n-1
     for lo < up {
         m := (lo+up+1)/2
