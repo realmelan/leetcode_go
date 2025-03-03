@@ -6,7 +6,7 @@
 ## determine solution space
 * once the utility function determined, you can decide the solution space, like a range of values, or all subsets of given elements.
 * Normally you need to go through all members of the solution space to find the optimal solution
-* However, if target value is monotonic in the solution space, you may use __binary search__
+* However, if utility value is monotonic in the solution space, you may use __binary search__
 
 ## determine how utility value changes in the solution space
 
