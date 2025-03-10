@@ -50,32 +50,7 @@ func minAbsDifference(nums []int, goal int) int {
     sort.Ints(left)
     sort.Ints(right)
 
-    //fmt.Println("left=%v, right=%v", left, right)
-
     res := math.MaxInt
-    idx, ok := slices.BinarySearch(left, goal)
-    if ok {
-        return 0
-    } else if idx == 0 {
-        res = min(res, left[0]-goal)
-    } else if idx == len(left) {
-        res = min(res, goal-left[len(left)-1])
-    } else {
-        res = min(res, min(goal-left[idx-1], left[idx]-goal))
-    }
-
-    idx, ok = slices.BinarySearch(right, goal)
-    if ok {
-        return 0
-    } else if idx == 0 {
-        res = min(res, right[0]-goal)
-    } else if idx == len(right) {
-        res = min(res, goal-right[len(right)-1])
-    } else {
-        res = min(res, min(goal-right[idx-1], right[idx]-goal))
-    }
-
-
     i, in := 0, len(left)
     j := len(right)-1
     for i < in && j >= 0 {
