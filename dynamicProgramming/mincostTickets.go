@@ -53,15 +53,11 @@ func mincostTickets(days []int, costs []int) int {
     dp[0] = 0
     for i := 0; i < n; i++ {
         dp[i+1] = costs[0] + dp[i]
-        for j:=i; j >= 0 ; j-- {
+        for j:=i; j >= 0 && days[i]-days[j] < 30; j-- {
             if days[i]-days[j] < 7 {
                 dp[i+1] = min(dp[i+1], dp[j]+costs[1])
             }
-            if days[i]-days[j] < 30 {
-                dp[i+1] = min(dp[i+1], dp[j]+costs[2])
-            } else {
-                break
-            }
+            dp[i+1] = min(dp[i+1], dp[j]+costs[2])
         }
     }
     return dp[n]
