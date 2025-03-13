@@ -43,33 +43,21 @@ Constraints:
 */
 
 func numberOfArithmeticSlices(nums []int) int {
-    // let dp[i]->map{diff->map{length->counter}}
+    // let dp[i]->map{diff:count of at least 2 numbers}
     // for i+1, loop through all element before i+1, use diff(nums[i+1]-nums[i]) to look
     // into the maps of dp[i] and add # of arithmetic subsequence
     n := len(nums)
-    dp := make([]map[int]map[int]int, n)
+    dp := make([]map[int]int, n)
     for i := range dp {
-        dp[i] = make(map[int]map[int]int)
+        dp[i] = make(map[int]int)
     }
 
     var res int
     for i := 1; i < n; i++ {
         for j := 0; j < i; j++ {
             diff := nums[i] - nums[j]
-            if _, ok := dp[i][diff]; !ok {
-                dp[i][diff] = make(map[int]int)
-            }
-            dp[i][diff][2] += 1
-            lm, ok := dp[j][diff]
-            if !ok {
-                continue
-            }
-            for l, count := range lm {
-                dp[i][diff][l+1] += count
-                if l>=2 {
-                    res += count
-                }
-            }
+            res += dp[j][diff] // each seq in dp[j][diff] plus nums[i] => a valid sequence
+            dp[i][diff] += dp[j][diff]+1 // all seqs in dp[j][diff], also (nums[j], nums[i]) is also a 2 number seq.
         }
         //fmt.Println("res=%v", res)
         //fmt.Println("dp[%v]=%v", i, dp[i])
