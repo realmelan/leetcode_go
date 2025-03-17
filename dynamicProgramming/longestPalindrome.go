@@ -58,6 +58,7 @@ func longestPalindrome(word1 string, word2 string) int {
     for i := range dp {
         dp[i][i] = 1
     }
+    res := 0
     for l := 2; l <= n; l++ {
         for i := 0; i+l-1<n; i++ {
             j := i+l-1
@@ -66,23 +67,13 @@ func longestPalindrome(word1 string, word2 string) int {
                 if i+1 <= j-1 {
                     dp[i][j] += dp[i+1][j-1]
                 }
+                if i < n1 && j >= n1 {
+                   res = max(res, dp[i][j])
+                }
             } else {
                 dp[i][j] = max(dp[i+1][j], dp[i][j-1])
             }
         }
-    }
-
-    res := 0
-    for i := 0; i < n1; i++ {
-        j := n2-1
-        for j >= 0 && word2[j] != word1[i] {
-            j--
-        }
-        if j < 0 {
-            continue
-        }
-
-        res = max(res, 2+dp[i+1][n1+j-1])
     }
     return res
 }
