@@ -65,49 +65,38 @@ func findCriticalAndPseudoCriticalEdges(n int, edges [][]int) [][]int {
 	// part 1: find critical edges
 	// step 1: build MST
 	used := make([]bool, en)
-	target := mst(n, 0, -1, es, used)
+	target := mst(n, -1, es, used)
     //fmt.Println("mst=%v", target)
 	// step 2: skip e,
-    cr := make([]int, 0)
+    var cr, pc []int
 	for i, e := range es {
-		used := make([]bool, en)
-        used[i] = true
-		weight := mst(n, 0, -1, es, used)
+		used1 := make([]bool, en)
+        used1[i] = true
+		weight := mst(n, -1, es, used1)
 		if weight != target {
 			cr = append(cr, e[3])
+            continue
 		}
-	}
-
-    // part 2:
-    pc := make(map[int]bool)
-    for i, e := range es {
-        used := make([]bool, en)
-        used[i] = true
-        weight := mst(n, e[2], i, es, used)
+        used2 := make([]bool, en)
+        used2[i] = true
+        weight = mst(n, i, es, used2)
         if weight == target {
-            pc[e[3]] = true
+            pc = append(pc, e[3])
         }
-    }
-
-    var res2 []int
-    for _, k := range cr {
-        delete(pc, k)
-    }
-    for k := range pc {
-        res2 = append(res2, k)
-    }
-    return [][]int{cr, res2}
+	}
+    return [][]int{cr, pc}
 }
 
-func mst(n, w, e int, es [][]int, used []bool) int {
+func mst(n, e int, es [][]int, used []bool) int {
 	// use krushkal
 	p := make([]int, n)
 	for i := range p {
 		p[i] = i
 	}
-    res := w
+    res := 0
     if e >= 0 {
         // connect
+        res += es[e][2]
         p[es[e][0]] = es[e][1]
     }
 
